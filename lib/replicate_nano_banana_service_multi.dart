@@ -106,7 +106,7 @@ class ReplicateKitchenAIService {
   ReplicateKitchenAIService({SafePromptFilter? filter})
     : _filter = filter ?? SafePromptFilter(mode: 'strict');
 
-  static const _apiToken = 'r8_S4WQAEQJiuclDVX4LLxfk6iFZMD3BpN2Uq0pF';
+  static const _apiToken = 'API_KEY';
   static const _model =
       'google/nano-banana'; // Generic kitchen model placeholder
 
