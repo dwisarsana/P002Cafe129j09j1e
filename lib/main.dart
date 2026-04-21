@@ -10,18 +10,18 @@ void main() async {
   // Initialize storage service
   // For now we just create it, but in real app we might await some init
 
-  runApp(const GardenAIApp());
+  runApp(const CafeAIApp());
 }
 
-class GardenAIApp extends StatelessWidget {
-  const GardenAIApp({super.key});
+class CafeAIApp extends StatelessWidget {
+  const CafeAIApp({super.key});
 
   @override
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [Provider<StorageService>(create: (_) => StorageService())],
       child: MaterialApp(
-        title: 'Garden AI',
+        title: 'Cafe AI',
         debugShowCheckedModeBanner: false,
         theme: AppTheme.lightTheme,
         home: const SplashScreen(),

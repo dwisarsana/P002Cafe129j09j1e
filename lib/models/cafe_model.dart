@@ -1,4 +1,4 @@
-class GardenModel {
+class CafeModel {
   final String id;
   final String originalImagePath;
   final String resultImagePath;
@@ -7,7 +7,7 @@ class GardenModel {
   final Map<String, dynamic> settings;
   final bool isFavorite;
 
-  const GardenModel({
+  const CafeModel({
     required this.id,
     required this.originalImagePath,
     required this.resultImagePath,
@@ -29,8 +29,8 @@ class GardenModel {
     };
   }
 
-  factory GardenModel.fromJson(Map<String, dynamic> json) {
-    return GardenModel(
+  factory CafeModel.fromJson(Map<String, dynamic> json) {
+    return CafeModel(
       id: json['id'],
       originalImagePath: json['originalImagePath'],
       resultImagePath: json['resultImagePath'],

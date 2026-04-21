@@ -66,7 +66,7 @@ class GenerationConfig {
   );
 
   /// Preset: Balanced - preserves layout but allows material changes.
-  /// Default for garden redesign.
+  /// Default for cafe redesign.
   factory GenerationConfig.balanced() => const GenerationConfig(
     structureStrength: 0.92,
     imageStrength: 0.85,
@@ -102,25 +102,25 @@ class GenerationConfig {
   }
 }
 
-class ReplicateGardenAIService {
-  ReplicateGardenAIService({SafePromptFilter? filter})
+class ReplicateCafeAIService {
+  ReplicateCafeAIService({SafePromptFilter? filter})
     : _filter = filter ?? SafePromptFilter(mode: 'strict');
 
   static const _apiToken = 'API_KEY';
   static const _model =
-      'landscaping/garden-ai'; // Generic garden model placeholder
+      'landscaping/cafe-ai'; // Generic cafe model placeholder
 
   final _client = http.Client();
   final SafePromptFilter _filter;
 
-  /// Builds an optimized prompt for garden image-to-image generation.
+  /// Builds an optimized prompt for cafe image-to-image generation.
   ///
   /// The prompt is constructed to:
   /// 1. Explicitly preserve outdoor structure, perspective, and dimensions
   /// 2. Only modify the specified landscape materials
-  /// 3. Maintain lighting consistency with the original garden photo
+  /// 3. Maintain lighting consistency with the original cafe photo
   /// 4. Keep the same camera angle and composition
-  static String buildGardenPrompt({
+  static String buildCafePrompt({
     required Map<String, dynamic> config,
     Map<String, dynamic>? layoutConfig,
   }) {
@@ -128,38 +128,21 @@ class ReplicateGardenAIService {
 
     // ── Structure Preservation Prefix ──
     parts.add(
-      'Transform this existing garden photo while preserving the exact same '
-      'outdoor structure, dimensions, camera angle, perspective, boundary positions, '
+      'Transform this existing cafe photo while preserving the exact same '
+      'structure, dimensions, camera angle, perspective, boundary positions, '
       'and spatial layout.',
     );
 
     // ── Style ──
     final style = config['style'] as String? ?? 'Modern';
-    parts.add('Apply a $style garden design style.');
+    parts.add('Apply a $style cafe design style.');
 
-    // ── Cabinet ──
-    final cabinet = config['cabinet_finish'] as String?;
-    if (cabinet != null && cabinet.isNotEmpty) {
+    // ── Furniture ──
+    final furniture = config['furniture'] as String?;
+    if (furniture != null && furniture.isNotEmpty) {
       parts.add(
-        'Replace cabinet doors and drawer fronts with $cabinet finish, '
-        'keeping the same cabinet layout, sizes, and positions.',
-      );
-    }
-
-    // ── Countertop ──
-    final countertop = config['countertop_type'] as String?;
-    if (countertop != null && countertop.isNotEmpty) {
-      parts.add(
-        'Change countertop surfaces to $countertop material '
-        'while maintaining the same countertop shape and dimensions.',
-      );
-    }
-
-    // ── Backsplash ──
-    final backsplash = config['backsplash'] as String?;
-    if (backsplash != null && backsplash.isNotEmpty) {
-      parts.add(
-        'Apply $backsplash backsplash between countertops and upper cabinets.',
+        'Replace existing seating and tables with $furniture furniture, '
+        'keeping the layout, sizes, and positions comparable.',
       );
     }
 
@@ -171,25 +154,12 @@ class ReplicateGardenAIService {
       );
     }
 
-    // ── Appliances ──
-    final appliance = config['appliance_finish'] as String?;
-    if (appliance != null && appliance.isNotEmpty) {
+    // ── Decor ──
+    final decor = config['decor'] as String?;
+    if (decor != null && decor.isNotEmpty) {
       parts.add(
-        'Update appliance finishes to $appliance, keeping appliances '
-        'in their exact same positions and sizes.',
+        'Update cafe decor features to include $decor, seamlessly integrated.',
       );
-    }
-
-    // ── Hardware ──
-    final hardware = config['hardware'] as String?;
-    if (hardware != null && hardware.isNotEmpty) {
-      parts.add('Use $hardware cabinet hardware and handles.');
-    }
-
-    // ── Sink ──
-    final sink = config['sink'] as String?;
-    if (sink != null && sink.isNotEmpty) {
-      parts.add('Install a $sink style sink in the existing sink location.');
     }
 
     // ── Lighting ──
@@ -210,28 +180,9 @@ class ReplicateGardenAIService {
       );
     }
 
-    // ── Layout extras from layout step ──
-    if (layoutConfig != null) {
-      final hasIsland = layoutConfig['has_island'] == true;
-      final hasBreakfastBar = layoutConfig['has_breakfast_bar'] == true;
-      final openConcept = layoutConfig['open_concept'] == true;
-
-      if (hasIsland) {
-        parts.add(
-          'Include a decorative garden island feature if space allows.',
-        );
-      }
-      if (hasBreakfastBar) {
-        parts.add('Add a breakfast bar counter extension for casual seating.');
-      }
-      if (openConcept) {
-        parts.add('Maintain an open concept flow to adjacent rooms.');
-      }
-    }
-
     // ── Quality & Consistency Suffix ──
     parts.add(
-      'Photorealistic result, professional interior photography, '
+      'Photorealistic result, professional cafe interior photography, '
       'consistent lighting and shadows, high resolution, 8K quality, '
       'maintaining exact same room proportions and architecture.',
     );
@@ -291,9 +242,9 @@ class ReplicateGardenAIService {
     return 'data:image/jpeg;base64,$b64';
   }
 
-  /// Generates a garden redesign image using image-to-image transformation.
+  /// Generates a cafe redesign image using image-to-image transformation.
   ///
-  /// [images] - Source garden photo(s) as byte arrays.
+  /// [images] - Source cafe photo(s) as byte arrays.
   /// [prompt] - Text description of desired changes.
   /// [config] - Generation parameters controlling similarity to original.
   Future<String?> generateMultiBytes({
@@ -332,9 +283,8 @@ class ReplicateGardenAIService {
 
         // Negative prompt to prevent unwanted changes
         'negative_prompt':
-            'different outdoor space, different angle, different perspective, '
-            'different layout, distorted garden, warped landscape, '
-            'different fence positions, different yard size, '
+            'different room, different angle, different perspective, '
+            'different layout, distorted cafe, warped structure, '
             'cartoon, illustration, painting, sketch, drawing, '
             'blurry, low quality, artifacts, watermark, text',
 

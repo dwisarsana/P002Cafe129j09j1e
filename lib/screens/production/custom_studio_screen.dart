@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import '../../theme/app_theme.dart';
-import '../../models/garden_style.dart';
+import '../../models/cafe_style.dart';
 import '../../mock/mock_data.dart';
 import '../../widgets/glass_container.dart';
 import 'generating_screen.dart';
@@ -11,7 +11,7 @@ import '../../src/constant.dart';
 
 class CustomStudioScreen extends StatefulWidget {
   final String imagePath;
-  final GardenStyle selectedStyle;
+  final CafeStyle selectedStyle;
 
   const CustomStudioScreen({
     super.key,
@@ -60,11 +60,11 @@ class _CustomStudioScreenState extends State<CustomStudioScreen>
   ];
 
   final List<String> _sectionTabs = [
-    'Environment',
-    'Plants',
-    'Hardscape',
+    'Ambiance',
+    'Furniture',
+    'Flooring',
     'Lighting',
-    'Water',
+    'Decor',
   ];
 
   @override
@@ -235,7 +235,7 @@ class _CustomStudioScreenState extends State<CustomStudioScreen>
                       const SizedBox(width: 8),
                       Expanded(
                         child: Text(
-                          'Adjust every detail to create your perfect ${widget.selectedStyle.name.toLowerCase()} garden',
+                          'Adjust every detail to create your perfect ${widget.selectedStyle.name.toLowerCase()} cafe',
                           style: TextStyle(
                             color: Colors.white.withValues(alpha: 0.6),
                             fontSize: 12,
@@ -307,11 +307,11 @@ class _CustomStudioScreenState extends State<CustomStudioScreen>
                         child: TabBarView(
                           controller: _tabController,
                           children: [
-                            _buildEnvironmentTab(),
-                            _buildPlantsTab(),
-                            _buildHardscapeTab(),
+                            _buildAmbianceTab(),
+                            _buildFurnitureTab(),
+                            _buildFlooringTab(),
                             _buildLightingTab(),
-                            _buildWaterTab(),
+                            _buildDecorTab(),
                           ],
                         ),
                       ),
@@ -357,7 +357,7 @@ class _CustomStudioScreenState extends State<CustomStudioScreen>
                                     color: Colors.white, size: 20),
                                 SizedBox(width: 10),
                                 Text(
-                                  'Generate Garden Design',
+                                  'Generate Cafe Design',
                                   style: TextStyle(
                                     color: Colors.white,
                                     fontSize: 16,
@@ -385,8 +385,8 @@ class _CustomStudioScreenState extends State<CustomStudioScreen>
     );
   }
 
-  // ============ ENVIRONMENT TAB ============
-  Widget _buildEnvironmentTab() {
+  // ============ AMBIANCE TAB ============
+  Widget _buildAmbianceTab() {
     return SingleChildScrollView(
       padding: const EdgeInsets.fromLTRB(20, 16, 20, 8),
       child: Column(
@@ -554,53 +554,53 @@ class _CustomStudioScreenState extends State<CustomStudioScreen>
     );
   }
 
-  // ============ PLANTS TAB ============
-  Widget _buildPlantsTab() {
+  // ============ FURNITURE TAB ============
+  Widget _buildFurnitureTab() {
     return SingleChildScrollView(
       padding: const EdgeInsets.fromLTRB(20, 16, 20, 8),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           _SliderRow(
-            label: 'Plant Density',
+            label: 'Seating Density',
             value: _density,
-            icon: Icons.grass_rounded,
+            icon: Icons.chair_alt_rounded,
             activeColor: AppTheme.mossGreen,
             onChanged: (v) => setState(() => _density = v),
-            leftLabel: 'Sparse',
-            rightLabel: 'Dense',
+            leftLabel: 'Spacious',
+            rightLabel: 'Crowded',
           ),
           const SizedBox(height: 8),
           _SliderRow(
-            label: 'Flower Coverage',
+            label: 'Table Size',
             value: _flowers,
-            icon: Icons.local_florist_rounded,
+            icon: Icons.table_restaurant_rounded,
             activeColor: AppTheme.roseGold,
             onChanged: (v) => setState(() => _flowers = v),
-            leftLabel: 'Subtle',
-            rightLabel: 'Abundant',
+            leftLabel: 'Small',
+            rightLabel: 'Communal',
           ),
           const SizedBox(height: 8),
           _SliderRow(
-            label: 'Tree Scale',
+            label: 'Bar Scale',
             value: _treeSize,
-            icon: Icons.park_rounded,
+            icon: Icons.local_cafe_rounded,
             activeColor: const Color(0xFF66BB6A),
             onChanged: (v) => setState(() => _treeSize = v),
-            leftLabel: 'Small',
+            leftLabel: 'Minimal',
             rightLabel: 'Grand',
           ),
 
           const SizedBox(height: 20),
 
-          _SectionLabel(label: 'Plant Categories', icon: Icons.category_rounded),
+          _SectionLabel(label: 'Furniture Styles', icon: Icons.category_rounded),
           const SizedBox(height: 12),
 
-          // Plant categories grid
+          // Furniture categories grid
           Wrap(
             spacing: 8,
             runSpacing: 8,
-            children: MockData.plantCategories.map((cat) {
+            children: MockData.furnitureOptions.map((cat) {
               return Container(
                 padding: const EdgeInsets.symmetric(
                     horizontal: 14, vertical: 10),
@@ -629,7 +629,7 @@ class _CustomStudioScreenState extends State<CustomStudioScreen>
                           ),
                         ),
                         Text(
-                          '${cat['count']} varieties',
+                          '${cat['count']} items',
                           style: TextStyle(
                             color: Colors.white.withValues(alpha: 0.4),
                             fontSize: 10,
@@ -647,22 +647,22 @@ class _CustomStudioScreenState extends State<CustomStudioScreen>
     );
   }
 
-  // ============ HARDSCAPE TAB ============
-  Widget _buildHardscapeTab() {
+  // ============ FLOORING TAB ============
+  Widget _buildFlooringTab() {
     return SingleChildScrollView(
       padding: const EdgeInsets.fromLTRB(20, 16, 20, 8),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          _SectionLabel(label: 'Pathway Material', icon: Icons.route_rounded),
+          _SectionLabel(label: 'Flooring Material', icon: Icons.grid_on_rounded),
           const SizedBox(height: 12),
           SizedBox(
             height: 90,
             child: ListView.builder(
               scrollDirection: Axis.horizontal,
-              itemCount: MockData.hardscapeOptions.length,
+              itemCount: MockData.flooringOptions.length,
               itemBuilder: (context, index) {
-                final option = MockData.hardscapeOptions[index];
+                final option = MockData.flooringOptions[index];
                 final isSelected = _selectedPathway == index;
                 return GestureDetector(
                   onTap: () {
@@ -716,19 +716,19 @@ class _CustomStudioScreenState extends State<CustomStudioScreen>
 
           const SizedBox(height: 24),
 
-          // Additional hardscape options
-          _SectionLabel(label: 'Garden Structures', icon: Icons.fence_rounded),
+          // Additional flooring options
+          _SectionLabel(label: 'Cafe Structures', icon: Icons.architecture_rounded),
           const SizedBox(height: 12),
           Wrap(
             spacing: 8,
             runSpacing: 8,
             children: [
-              _ToggleChip(label: '🏡 Pergola', isOn: true),
-              _ToggleChip(label: '🪑 Seating', isOn: false),
-              _ToggleChip(label: '🔥 Fire Pit', isOn: false),
-              _ToggleChip(label: '🏗️ Raised Beds', isOn: true),
-              _ToggleChip(label: '🧱 Retaining Wall', isOn: false),
-              _ToggleChip(label: '🚪 Garden Gate', isOn: false),
+              _ToggleChip(label: '🚪 Archway', isOn: true),
+              _ToggleChip(label: '🪟 Bay Window', isOn: false),
+              _ToggleChip(label: '🪜 Staircase', isOn: false),
+              _ToggleChip(label: '🧱 Accent Wall', isOn: true),
+              _ToggleChip(label: '🪜 Mezzanine', isOn: false),
+              _ToggleChip(label: '🚪 French Doors', isOn: false),
             ],
           ),
         ],
@@ -749,9 +749,9 @@ class _CustomStudioScreenState extends State<CustomStudioScreen>
             height: 100,
             child: ListView.builder(
               scrollDirection: Axis.horizontal,
-              itemCount: MockData.lightingOptions.length,
+              itemCount: MockData.cafeLightingOptions.length,
               itemBuilder: (context, index) {
-                final option = MockData.lightingOptions[index];
+                final option = MockData.cafeLightingOptions[index];
                 final isSelected = _selectedLighting == index;
                 return GestureDetector(
                   onTap: () {
@@ -833,34 +833,34 @@ class _CustomStudioScreenState extends State<CustomStudioScreen>
     );
   }
 
-  // ============ WATER TAB ============
-  Widget _buildWaterTab() {
+  // ============ DECOR TAB ============
+  Widget _buildDecorTab() {
     return SingleChildScrollView(
       padding: const EdgeInsets.fromLTRB(20, 16, 20, 8),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           _SliderRow(
-            label: 'Water Element Scale',
+            label: 'Decor Element Scale',
             value: _water,
-            icon: Icons.water_drop_rounded,
+            icon: Icons.brush_rounded,
             activeColor: AppTheme.skyBlue,
             onChanged: (v) => setState(() => _water = v),
-            leftLabel: 'None',
-            rightLabel: 'Grand',
+            leftLabel: 'Minimal',
+            rightLabel: 'Eclectic',
           ),
 
           const SizedBox(height: 20),
 
-          _SectionLabel(label: 'Water Feature Type', icon: Icons.waves_rounded),
+          _SectionLabel(label: 'Decor Feature Type', icon: Icons.palette_rounded),
           const SizedBox(height: 12),
           SizedBox(
             height: 100,
             child: ListView.builder(
               scrollDirection: Axis.horizontal,
-              itemCount: MockData.waterFeatures.length,
+              itemCount: MockData.decorOptions.length,
               itemBuilder: (context, index) {
-                final option = MockData.waterFeatures[index];
+                final option = MockData.decorOptions[index];
                 final isSelected = _selectedWaterFeature == index;
                 return GestureDetector(
                   onTap: () {

@@ -6,7 +6,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:provider/provider.dart';
 
-import '../../models/garden_model.dart';
+import '../../models/cafe_model.dart';
 import '../../services/storage_service.dart';
 import '../../theme/app_theme.dart';
 
@@ -50,7 +50,7 @@ class HistoryScreen extends StatefulWidget {
 }
 
 class _HistoryScreenState extends State<HistoryScreen> {
-  late Future<List<GardenModel>> _gardensFuture;
+  late Future<List<CafeModel>> _cafesFuture;
   _SortOption _sortOption = _SortOption.newest;
   bool _isSelecting = false;
   final Set<String> _selectedIds = {};
@@ -62,7 +62,7 @@ class _HistoryScreenState extends State<HistoryScreen> {
   }
 
   void _loadData() {
-    _gardensFuture = context.read<StorageService>().loadGardens();
+    _cafesFuture = context.read<StorageService>().loadCafes();
   }
 
   void _reload() {
@@ -73,7 +73,7 @@ class _HistoryScreenState extends State<HistoryScreen> {
     });
   }
 
-  List<GardenModel> _sort(List<GardenModel> list) {
+  List<CafeModel> _sort(List<CafeModel> list) {
     final sorted = [...list];
     switch (_sortOption) {
       case _SortOption.newest:
@@ -109,14 +109,14 @@ class _HistoryScreenState extends State<HistoryScreen> {
       );
 
   // ── Delete selected ──────────────────────────────────────
-  Future<void> _deleteSelected(List<GardenModel> all) async {
+  Future<void> _deleteSelected(List<CafeModel> all) async {
     final confirm = await _showDeleteDialog(
         context, '${_selectedIds.length} item(s)');
     if (!confirm) return;
 
     final storage = context.read<StorageService>();
     final remaining = all.where((g) => !_selectedIds.contains(g.id)).toList();
-    await storage.saveGardens(remaining);
+    await storage.saveCafes(remaining);
     _reload();
   }
 
@@ -126,7 +126,7 @@ class _HistoryScreenState extends State<HistoryScreen> {
           builder: (_) => AlertDialog(
             backgroundColor: AppTheme.charcoal,
             shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-            title: const Text('Delete Garden?',
+            title: const Text('Delete Cafe?',
                 style: TextStyle(color: Colors.white, fontWeight: FontWeight.w700)),
             content: Text(
               'Remove $label from your history? This cannot be undone.',
@@ -232,8 +232,8 @@ class _HistoryScreenState extends State<HistoryScreen> {
     return Scaffold(
       backgroundColor: AppTheme.warmSand,
       body: SafeArea(
-        child: FutureBuilder<List<GardenModel>>(
-          future: _gardensFuture,
+        child: FutureBuilder<List<CafeModel>>(
+          future: _cafesFuture,
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {
               return const Center(
@@ -281,7 +281,7 @@ class _HistoryScreenState extends State<HistoryScreen> {
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Text('Garden Timeline',
+                            Text('Cafe Timeline',
                                 style: Theme.of(context).textTheme.headlineSmall?.copyWith(fontWeight: FontWeight.w900, color: AppTheme.mossGreen)),
                             Text(
                               '${all.length} transformation${all.length == 1 ? '' : 's'}',
@@ -370,11 +370,11 @@ class _HistoryScreenState extends State<HistoryScreen> {
                                   size: 52, color: AppTheme.mintGreen),
                             ),
                             const SizedBox(height: 20),
-                            Text('No gardens yet',
+                            Text('No cafes yet',
                                 style: Theme.of(context).textTheme.titleMedium),
                             const SizedBox(height: 8),
                             Text(
-                              'Start creating your first garden transformation!',
+                              'Start creating your first cafe transformation!',
                               style: TextStyle(
                                   color: AppTheme.slate.withValues(alpha: 0.7),
                                   fontSize: 14),
@@ -393,11 +393,11 @@ class _HistoryScreenState extends State<HistoryScreen> {
                       padding: const EdgeInsets.fromLTRB(16, 0, 16, 120),
                       itemCount: all.length,
                       itemBuilder: (context, index) {
-                        final garden = all[index];
-                        final selected = _selectedIds.contains(garden.id);
+                        final cafe = all[index];
+                        final selected = _selectedIds.contains(cafe.id);
 
                         return _HistoryCard(
-                          garden: garden,
+                          cafe: cafe,
                           buildImage: _buildImage,
                           isSelecting: _isSelecting,
                           isSelected: selected,
@@ -405,13 +405,13 @@ class _HistoryScreenState extends State<HistoryScreen> {
                             if (_isSelecting) {
                               setState(() {
                                 if (selected) {
-                                  _selectedIds.remove(garden.id);
+                                  _selectedIds.remove(cafe.id);
                                 } else {
-                                  _selectedIds.add(garden.id);
+                                  _selectedIds.add(cafe.id);
                                 }
                               });
                             } else {
-                              _openDetail(context, garden, all);
+                              _openDetail(context, cafe, all);
                             }
                           },
                           onLongPress: () {
@@ -419,7 +419,7 @@ class _HistoryScreenState extends State<HistoryScreen> {
                             if (!_isSelecting) {
                               setState(() {
                                 _isSelecting = true;
-                                _selectedIds.add(garden.id);
+                                _selectedIds.add(cafe.id);
                               });
                             }
                           },
@@ -436,21 +436,21 @@ class _HistoryScreenState extends State<HistoryScreen> {
     );
   }
 
-  void _openDetail(BuildContext ctx, GardenModel garden, List<GardenModel> all) {
+  void _openDetail(BuildContext ctx, CafeModel cafe, List<CafeModel> all) {
     showModalBottomSheet(
       context: ctx,
       isScrollControlled: true,
       backgroundColor: Colors.transparent,
       builder: (_) => HistoryDetailSheet(
-        garden: garden,
+        cafe: cafe,
         buildImage: _buildImage,
         onDelete: () async {
           Navigator.pop(ctx);
-          final confirm = await _showDeleteDialog(ctx, 'this garden');
+          final confirm = await _showDeleteDialog(ctx, 'this cafe');
           if (!confirm) return;
           final storage = context.read<StorageService>();
-          final remaining = all.where((g) => g.id != garden.id).toList();
-          await storage.saveGardens(remaining);
+          final remaining = all.where((g) => g.id != cafe.id).toList();
+          await storage.saveCafes(remaining);
           _reload();
         },
       ),
@@ -462,7 +462,7 @@ class _HistoryScreenState extends State<HistoryScreen> {
 // History Card
 // ─────────────────────────────────────────────────────────
 class _HistoryCard extends StatelessWidget {
-  final GardenModel garden;
+  final CafeModel cafe;
   final Widget Function(String) buildImage;
   final bool isSelecting;
   final bool isSelected;
@@ -470,7 +470,7 @@ class _HistoryCard extends StatelessWidget {
   final VoidCallback onLongPress;
 
   const _HistoryCard({
-    required this.garden,
+    required this.cafe,
     required this.buildImage,
     required this.isSelecting,
     required this.isSelected,
@@ -504,7 +504,7 @@ class _HistoryCard extends StatelessWidget {
           child: Stack(
             fit: StackFit.expand,
             children: [
-              buildImage(garden.resultImagePath),
+              buildImage(cafe.resultImagePath),
               // Gradient
               Positioned(
                 bottom: 0,
@@ -537,7 +537,7 @@ class _HistoryCard extends StatelessWidget {
                         mainAxisSize: MainAxisSize.min,
                         children: [
                           Text(
-                            garden.styleName,
+                            cafe.styleName,
                             style: const TextStyle(
                               color: Colors.white,
                               fontWeight: FontWeight.w700,
@@ -548,14 +548,14 @@ class _HistoryCard extends StatelessWidget {
                           ),
                           const SizedBox(height: 2),
                           Text(
-                            _formatDate(garden.timestamp),
+                            _formatDate(cafe.timestamp),
                             style: const TextStyle(
                                 color: Colors.white60, fontSize: 12),
                           ),
                         ],
                       ),
                     ),
-                    if (garden.isFavorite)
+                    if (cafe.isFavorite)
                       const Icon(Icons.favorite_rounded,
                           color: Colors.redAccent, size: 18),
                   ],
@@ -606,13 +606,13 @@ class _HistoryCard extends StatelessWidget {
 // History Detail Bottom Sheet
 // ─────────────────────────────────────────────────────────
 class HistoryDetailSheet extends StatefulWidget {
-  final GardenModel garden;
+  final CafeModel cafe;
   final Widget Function(String) buildImage;
   final VoidCallback onDelete;
 
   const HistoryDetailSheet({
     super.key,
-    required this.garden,
+    required this.cafe,
     required this.buildImage,
     required this.onDelete,
   });
@@ -626,7 +626,7 @@ class _HistoryDetailSheetState extends State<HistoryDetailSheet> {
 
   @override
   Widget build(BuildContext context) {
-    final g = widget.garden;
+    final g = widget.cafe;
     final screenH = MediaQuery.of(context).size.height;
 
     return Container(
@@ -784,12 +784,12 @@ class _HistoryDetailSheetState extends State<HistoryDetailSheet> {
     );
   }
 
-  void _openFullscreen(BuildContext ctx, GardenModel g) {
+  void _openFullscreen(BuildContext ctx, CafeModel g) {
     Navigator.push(
       ctx,
       MaterialPageRoute(
         builder: (_) => _FullscreenView(
-          garden: g,
+          cafe: g,
           buildImage: widget.buildImage,
         ),
       ),
@@ -810,10 +810,10 @@ class _HistoryDetailSheetState extends State<HistoryDetailSheet> {
 // Full Screen View
 // ─────────────────────────────────────────────────────────
 class _FullscreenView extends StatefulWidget {
-  final GardenModel garden;
+  final CafeModel cafe;
   final Widget Function(String) buildImage;
 
-  const _FullscreenView({required this.garden, required this.buildImage});
+  const _FullscreenView({required this.cafe, required this.buildImage});
 
   @override
   State<_FullscreenView> createState() => _FullscreenViewState();
@@ -837,10 +837,10 @@ class _FullscreenViewState extends State<_FullscreenView> {
         child: Stack(
           fit: StackFit.expand,
           children: [
-            widget.buildImage(widget.garden.originalImagePath),
+            widget.buildImage(widget.cafe.originalImagePath),
             ClipRect(
               clipper: _RightClipper(_sliderX),
-              child: widget.buildImage(widget.garden.resultImagePath),
+              child: widget.buildImage(widget.cafe.resultImagePath),
             ),
             // Divider
             Positioned(
@@ -910,7 +910,7 @@ class _FullscreenViewState extends State<_FullscreenView> {
                     borderRadius: BorderRadius.circular(20),
                   ),
                   child: Text(
-                    widget.garden.styleName,
+                    widget.cafe.styleName,
                     style: const TextStyle(
                         color: Colors.white,
                         fontWeight: FontWeight.w700,

@@ -2,13 +2,13 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import '../../theme/app_theme.dart';
-import '../../models/garden_style.dart';
+import '../../models/cafe_style.dart';
 import 'rendering_screen.dart';
 
 class BeforeAfterScreen extends StatefulWidget {
   final String originalPath;
   final String resultPath;
-  final GardenStyle style;
+  final CafeStyle style;
   final Map<String, dynamic> settings;
 
   const BeforeAfterScreen({

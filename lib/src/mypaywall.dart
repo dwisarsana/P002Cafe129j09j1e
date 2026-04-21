@@ -1,5 +1,5 @@
 // lib/src/mypaywall.dart
-// Garden AI — Premium Paywall Screen
+// Cafe AI — Premium Paywall Screen
 
 import 'dart:async';
 import 'package:flutter/cupertino.dart';
@@ -16,15 +16,15 @@ import 'constant.dart'
         kPrivacyPolicyUrl,
         kTermsOfUseUrl;
 
-class GardenAIPaywall extends StatefulWidget {
+class CafeAIPaywall extends StatefulWidget {
   final bool forceLoading;
-  const GardenAIPaywall({super.key, this.forceLoading = false});
+  const CafeAIPaywall({super.key, this.forceLoading = false});
 
   @override
-  State<GardenAIPaywall> createState() => _GardenAIPaywallState();
+  State<CafeAIPaywall> createState() => _CafeAIPaywallState();
 }
 
-class _GardenAIPaywallState extends State<GardenAIPaywall>
+class _CafeAIPaywallState extends State<CafeAIPaywall>
     with SingleTickerProviderStateMixin {
   Offerings? _offerings;
   StoreProduct? _token5;
@@ -123,7 +123,7 @@ class _GardenAIPaywallState extends State<GardenAIPaywall>
       if (isPro) {
         if (Navigator.canPop(context)) Navigator.pop(context);
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Welcome to Garden AI Premium!')),
+          const SnackBar(content: Text('Welcome to Cafe AI Premium!')),
         );
       }
     } catch (e) {
@@ -329,7 +329,7 @@ class _GardenAIPaywallState extends State<GardenAIPaywall>
           ),
           const SizedBox(height: 24),
           const Text(
-            'Garden AI Premium',
+            'Cafe AI Premium',
             style: TextStyle(
               color: Colors.white,
               fontSize: 26,
@@ -346,10 +346,10 @@ class _GardenAIPaywallState extends State<GardenAIPaywall>
           const SizedBox(height: 40),
 
           _sectionTitle('Premium Features'),
-          _feature(CupertinoIcons.infinite, 'Unlimited Garden generations'),
+          _feature(CupertinoIcons.infinite, 'Unlimited Cafe generations'),
           _feature(
             CupertinoIcons.paintbrush,
-            'Access all 100+ Premium garden styles',
+            'Access all 100+ Premium cafe styles',
           ),
           _feature(CupertinoIcons.photo_fill, 'High-resolution 4K exports'),
           _feature(CupertinoIcons.bolt_fill, 'Priority AI Rendering'),
