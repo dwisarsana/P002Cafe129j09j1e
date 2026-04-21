@@ -218,7 +218,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 color: Colors.redAccent.withValues(alpha: 0.1),
                 child: ListTile(
                   leading: const Icon(Icons.delete_forever_rounded, color: Colors.redAccent),
-                  title: const Text("Reset All Garden Data", style: TextStyle(color: Colors.redAccent)),
+                  title: const Text("Reset All Cafe Data", style: TextStyle(color: Colors.redAccent)),
                   onTap: () async {
                     final storage = context.read<StorageService>();
                     final confirm = await showDialog<bool>(
@@ -226,7 +226,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                       builder: (context) => AlertDialog(
                         backgroundColor: AppTheme.charcoal,
                         title: const Text("Reset Data?"),
-                        content: const Text("This will delete all your saved gardens and reset tokens. This action cannot be undone."),
+                        content: const Text("This will delete all your saved cafes and reset tokens. This action cannot be undone."),
                         actions: [
                           TextButton(onPressed: () => Navigator.pop(context, false), child: const Text("Cancel")),
                           TextButton(
@@ -251,7 +251,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
               const SizedBox(height: 40),
               Center(
                 child: Text(
-                  "Garden AI v1.0.0",
+                  "Cafe AI v1.0.0",
                   style: Theme.of(context).textTheme.labelSmall,
                 ),
               ),

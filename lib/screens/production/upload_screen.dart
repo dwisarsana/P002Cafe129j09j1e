@@ -46,7 +46,7 @@ class _UploadScreenState extends State<UploadScreen>
     {
       'icon': Icons.hd_rounded,
       'title': 'High Resolution',
-      'desc': 'Clear photos produce more detailed garden designs',
+      'desc': 'Clear photos produce more detailed cafe designs',
       'color': const Color(0xFFB39DDB),
     },
   ];
@@ -166,7 +166,7 @@ class _UploadScreenState extends State<UploadScreen>
             ),
           ),
           Text(
-            'Add Your Garden Photo',
+            'Add Your Cafe Photo',
             style: Theme.of(context).textTheme.titleLarge?.copyWith(
                   color: Colors.white,
                   fontWeight: FontWeight.w700,
@@ -253,7 +253,7 @@ class _UploadScreenState extends State<UploadScreen>
             ),
             const SizedBox(width: 10),
             Text(
-              "Upload Garden",
+              "Upload Cafe",
               style: Theme.of(context).textTheme.titleLarge?.copyWith(
                     fontWeight: FontWeight.w700,
                   ),
@@ -355,7 +355,7 @@ class _UploadScreenState extends State<UploadScreen>
                       borderRadius: BorderRadius.circular(20),
                     ),
                     child: Text(
-                      "AI-powered garden design in seconds",
+                      "AI-powered cafe design in seconds",
                       style:
                           Theme.of(context).textTheme.bodyMedium?.copyWith(
                                 color: AppTheme.mossGreen,
@@ -452,7 +452,7 @@ class _UploadScreenState extends State<UploadScreen>
                                 // Hero background image
                                 Positioned.fill(
                                   child: Image.asset(
-                                    'assets/images/AI Garden Transformation.jpeg',
+                                    'assets/images/AI Cafe Transformation.jpeg',
                                     fit: BoxFit.cover,
                                   ).animate().blur(begin: const Offset(4, 4), end: Offset.zero, duration: 1.seconds).scale(begin: const Offset(1.1, 1.1), end: const Offset(1.0, 1.0), duration: 1.seconds),
                                 ),
